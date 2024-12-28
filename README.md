@@ -1,18 +1,15 @@
-# TelecommSim: Simulateur de Protocole de Communication
-
 TelecommSim est une application développée pour simuler et comparer les performances des protocoles de communication TCP, UDP et SCTP. Ce projet est conçu pour fournir un outil d'apprentissage et d'analyse pour les chercheurs, étudiants et professionnels du secteur des télécommunications.
 
 ## Table des matières
 
 - [Introduction](#introduction)
 - [Architecture du logiciel](#architecture-du-logiciel)
-- [Fonctionnalités principales](#fonctionnalités-principales)
-- [Exemples de simulation](#exemples-de-simulation)
-- [Impact du logiciel](#impact-du-logiciel)
-- [Travaux futurs](#travaux-futurs)
-- [Installation](#installation)
-- [Contribuer](#contribuer)
-- [Références](#références)
+- [Docker Image](#docker-image)
+- [Backend](#backend)
+- [Frontend](#frontend)
+- [Démarrage](#demarrage)
+- [Contribuer](#Contributeurs)
+
 
 ## Introduction
 
@@ -26,8 +23,9 @@ L'architecture de TelecommSim repose sur plusieurs modules qui collaborent pour 
 
 Le **back-end** est construit en utilisant **Spring Boot**, avec **Thymeleaf** pour le front-end. Le système utilise **MySQL** pour la gestion des données et **Spring Security** pour sécuriser les requêtes.
 
+## Docker Image
 
-## Docker image 
+yaml
 version: '3.8'
 
 services:
@@ -43,8 +41,7 @@ services:
       timeout: 15s
       retries: 10
     ports:
-          - "3307:3306"
-
+      - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
@@ -74,7 +71,9 @@ volumes:
 
 networks:
   telecomm-network:
-## Backend 
+
+
+## Backend
 **Spring Boot** : Framework Java basé sur Spring qui simplifie le développement des applications Java. Utilisé pour gérer la logique métier, les services REST, et les interactions avec la base de données.
 - **MySQL** : Système de gestion de base de données relationnelle (SGBD) utilisé pour stocker les informations et les résultats de simulation. La base de données est connectée à l'application via Spring Data JPA pour simplifier les opérations CRUD.
 - **Spring Security** : Framework de sécurité utilisé pour sécuriser les API et protéger les données sensibles contre les accès non autorisés.
@@ -108,7 +107,7 @@ The backend of the **TelecommSim** application is organized as follows:
    - SecurityConfig: A configuration file for handling security-related settings, including user authorization and authentication.
    - SimulationRequest: Represents a simulation request, including the parameters sent by the user to execute a simulation.
    - SimulationResult: Stores the results of a simulation, which can also be linked with the entity for data storage.
-   - TelecommSimApplication: The main entry point of the Spring Boot application, containing the `main` method that runs the application.
+   - TelecommSimApplication: The main entry point of the Spring Boot application, containing the main method that runs the application.
 
 ## Dependencies
 <?xml version="1.0" encoding="UTF-8"?>
@@ -235,9 +234,8 @@ Assurez-vous que les éléments suivants sont installés sur votre machine :
    - Installez XAMPP depuis [ici](https://www.apachefriends.org/download.html).
    - Assurez-vous que MySQL est installé et fonctionne dans XAMPP (bien que Docker soit utilisé pour la base de données, vous pouvez vouloir confirmer sa configuration si vous exécutez localement).
 
-3. **Node.js** et **npm** : Si vous souhaitez exécuter l'application front-end, vous aurez besoin de Node.js et npm. Utilisez [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm) pour l'installer.
 
-## Configuration du backend (via Docker)
+## Configuration du backend 
 
 1. **Démarrer les serveurs XAMPP Apache et MySQL** :
 
@@ -250,7 +248,7 @@ Assurez-vous que les éléments suivants sont installés sur votre machine :
    Exécutez les commandes suivantes pour construire les conteneurs Docker et démarrer l'environnement :
 
    docker-compose up
-   et sur navigateur http://localhost8085
+   et sur navigateur http://localhost:8085
 
 ### Video demonstrative
 
@@ -260,5 +258,5 @@ Assurez-vous que les éléments suivants sont installés sur votre machine :
 
 ## Contributeurs :
 
-- **Aya Hormatallah** ([GitHub](https://github.com/RoaEldhmini))
-- **Achouak Bougrine** ([GitHub](https://github.com/KawtarElAzizi))
+- **Aya Hormatallah** ()
+- **Achouak Bougrine**
