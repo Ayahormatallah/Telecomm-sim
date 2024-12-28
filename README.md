@@ -19,7 +19,7 @@ Les protocoles de communication sont essentiels pour assurer la transmission eff
 
 L'architecture de TelecommSim repose sur plusieurs modules qui collaborent pour offrir une expérience interactive et fluide. Voici un diagramme représentant l'architecture du logiciel :
 
-![Architecture Logicielle](./images/architecture.png)
+![Image Alt](https://github.com/Ayahormatallah/Telecomm-sim/blob/01a59356e2352cb879c823cf68529dfc08233f36/diagram-export-27-12-2024-22_08_40.png).
 
 Le **back-end** est construit en utilisant **Spring Boot**, avec **Thymeleaf** pour le front-end. Le système utilise **MySQL** pour la gestion des données et **Spring Security** pour sécuriser les requêtes.
 
