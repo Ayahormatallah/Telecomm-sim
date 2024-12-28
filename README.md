@@ -259,5 +259,5 @@ https://github.com/user-attachments/assets/c920c9a4-93ba-407d-b333-940ab051867f
 
 ## Contributeurs :
 
-- **Aya Hormatallah** ()
+- **Aya Hormatallah** (https://github.com/Ayahormatallah/Telecomm-sim.git)
 - **Achouak Bougrine**(https://github.com/AchouakBougrine/TelecommSim.git)
