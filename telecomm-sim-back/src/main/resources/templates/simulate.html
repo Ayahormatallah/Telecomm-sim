@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation des Protocoles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f5f7;
+        }
+
+        .header {
+            background-color: #24d278;
+            color: white;
+            padding: 20px 10px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        .navbar {
+            background-color: #24d278;
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+
+        .navbar h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+        }
+
+        .navbar p {
+            font-size: 1rem;
+            text-align: center;
+            margin: 10px 0 0;
+        }
+
+.logout-btn {
+            font-family: Arial, sans-serif;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 2px solid white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            color: #24d278;
+            background-color: white;
+            border-color: #24d278;
+            transform: scale(1.1);
+        }
+ /* Formulaire */
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+ .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #24d278;
+        }
+
+
+   .form-group label {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            background: white;
+            padding: 0 5px;
+            color: #aaa;
+            font-size: 14px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+   .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group select:focus + label,
+        .form-group select:not([value=""]) + label {
+            top: -10px;
+            left: 10px;
+            color: #24d278;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-simulate {
+            width: 100%;
+            background-color: #24d278;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+     .btn-simulate:hover {
+            background-color: #1fa965;
+            transform: scale(1.05);
+        }
+
+
+
+        #results-container {
+            display: none;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        #chart-container {
+            display: none;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: 400px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div style="text-align: center; margin: 0 auto;">
+        <h1>Simulation des Protocoles</h1>
+        <p style="margin-top: 10px; font-size: 1rem; line-height: 1.5; max-width: 800px; margin-left: auto; margin-right: auto;">
+            Configurez les paramètres ci-dessous pour simuler et analyser les performances des différents protocoles de communication.
+        </p>
+    </div>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+
+<!-- Formulaire -->
+<div class="form-container">
+    <form id="simulateForm">
+        <div class="form-group">
+            <select id="protocol" name="protocol" required>
+                <option value="" disabled selected>Choisissez un protocole</option>
+                <option value="TCP">TCP</option>
+                <option value="UDP">UDP</option>
+                <option value="SCTP">SCTP</option>
+            </select>
+            <label for="protocol"></label>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="packetSize" name="packetSize" placeholder=" " min="1" required>
+            <label for="packetSize">Taille du paquet (en octets)</label>
+        </div>
+        <div class="form-group">
+            <input type="number" id="vitsig" name="vitsignal" placeholder=" " min="1" required>
+            <label for="vitsig">Vitesse du signal (m/s)</label>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="connectionSpeed" name="connectionSpeed" placeholder=" " min="1" required>
+            <label for="connectionSpeed">Vitesse de connexion (en Mbps)</label>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="distance" name="distance" placeholder=" " min="1" required>
+            <label for="distance">Distance (en km)</label>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="packetLoss" name="packetLoss" placeholder=" " min="0" max="100" required>
+            <label for="packetLoss">Perte de paquets (%)</label>
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" id="compareAll" class="form-check-input" name="compareAll">
+            <label for="compareAll" class="form-check-label">Comparer tous les protocoles</label>
+        </div>
+
+        <button type="submit" class="btn-simulate">Simuler</button>
+    </form>
+</div>
+
+
+<div id="results-container">
+    <h2>Résultats de Simulation</h2>
+    <div class="result-item"><strong>Protocole :</strong> <span id="resultProtocol">-</span></div>
+    <div class="result-item"><strong>Débit :</strong> <span id="resultThroughput">0</span></div>
+    <div class="result-item"><strong>Latence :</strong> <span id="resultLatency">0</span></div>
+</div>
+
+<div id="chart-container">
+    <h2 class="text-center">Graphique de Comparaison des Protocoles</h2>
+    <canvas id="simulationChart"></canvas>
+    <button id="exportGraphBtn" class="btn btn-secondary mt-3">Exporter le Graphique (PNG)</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let chartInstance;
+
+    function renderChart(labels, throughputData, latencyData) {
+        const ctx = document.getElementById('simulationChart').getContext('2d');
+        if (chartInstance) chartInstance.destroy(); // Détruire l'ancien graphique avant d'en créer un nouveau
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Débit (Mbps)',
+                        data: throughputData,
+                        backgroundColor: 'rgba(36, 210, 120, 0.6)',
+                        borderColor: 'rgba(36, 210, 120, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Latence (ms)',
+                        data: latencyData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+    }
+
+    document.getElementById('simulateForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const protocol = document.getElementById('protocol').value;
+        const packetSize = parseFloat(document.getElementById('packetSize').value);
+        const connectionSpeed = parseFloat(document.getElementById('connectionSpeed').value);
+        const distance = parseFloat(document.getElementById('distance').value);
+        const packetLoss = parseFloat(document.getElementById('packetLoss').value);
+        const vitsig = parseFloat(document.getElementById('vitsig').value);
+        const compareAll = document.getElementById('compareAll').checked;
+
+        let labels = [];
+        let throughputData = [];
+        let latencyData = [];
+
+        if (compareAll) {
+            labels = ['TCP', 'UDP', 'SCTP'];
+            throughputData = [
+                connectionSpeed * (1 - packetLoss / 100),
+                connectionSpeed * (1 - packetLoss / 100),
+                connectionSpeed * (1 - packetLoss / 100)
+            ];
+            latencyData = [
+                (packetSize / connectionSpeed) + (distance / vitsig) + 10 + packetLoss * 2,
+                (packetSize / connectionSpeed) + (distance / vitsig) + 5 + packetLoss * 1.5,
+                (packetSize / connectionSpeed) + (distance / vitsig) + 8 + packetLoss * 1.8
+            ];
+        } else {
+            labels = [protocol];
+            const throughput = connectionSpeed * (1 - packetLoss / 100);
+            let latency = (packetSize / connectionSpeed) + (distance / vitsig);
+            if (protocol === 'TCP') latency += 10 + packetLoss * 2;
+            if (protocol === 'UDP') latency += 5 + packetLoss * 1.5;
+            if (protocol === 'SCTP') latency += 8 + packetLoss * 1.8;
+
+            throughputData = [throughput];
+            latencyData = [latency];
+        }
+
+        document.getElementById('results-container').style.display = 'block';
+        document.getElementById('resultProtocol').innerText = labels.join(', ');
+        document.getElementById('resultThroughput').innerText = throughputData.map(t => t.toFixed(2)).join(' Mbps, ') + ' Mbps';
+        document.getElementById('resultLatency').innerText = latencyData.map(l => l.toFixed(2)).join(' ms, ') + ' ms';
+
+        document.getElementById('chart-container').style.display = 'block';
+        renderChart(labels, throughputData, latencyData);
+    });
+
+    // Fonction pour exporter le graphique en PNG
+    document.getElementById('exportGraphBtn').addEventListener('click', function () {
+        const canvas = document.getElementById('simulationChart'); // Sélection du canvas
+        const link = document.createElement('a'); // Crée un élément <a> pour le téléchargement
+        link.href = canvas.toDataURL('image/png'); // Convertit le graphique en une image PNG
+        link.download = 'graphe_simulation.png'; // Nom du fichier à télécharger
+        link.click(); // Simule un clic pour démarrer le téléchargement
+    });
+</script>
+</body>
+</html>
